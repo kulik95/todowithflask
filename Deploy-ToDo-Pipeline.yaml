@@ -8,7 +8,6 @@ parameters:
     displayName: Environment
     type: string
     default: 'dev'
-
   - name: chartVersion
     displayName: Chart Version
     type: string
@@ -17,8 +16,6 @@ parameters:
     displayName: Deployment Namespace
     type: string
     default: default
-
-variables:
   - name: chartPath
     value: 'helm/todo'
   - name: chartName
