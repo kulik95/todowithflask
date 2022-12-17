@@ -36,11 +36,6 @@ stages:
           - name: k8scluster
             value: 'todo-k8s'
         steps:
-          - task: DownloadBuildArtifacts@0
-            displayName: Download Artifact
-            inputs:
-              artifactName: 'drop'
-              downloadPath: '$(System.DefaultWorkingDirectory)'
           - task: HelmInstaller@1
             displayName: Helm Installer
             inputs:
