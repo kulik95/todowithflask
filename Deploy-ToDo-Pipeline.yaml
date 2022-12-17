@@ -1,3 +1,4 @@
+Copy code
 trigger:
   - none
   
@@ -44,7 +45,7 @@ stages:
             displayName: Helm Deploy
             inputs:
               command: 'upgrade'
-              chartPath: '$(System.DefaultWorkingDirectory)/drop/${{ variables.chartName }}/${{ variables.chartName  }}-${{ variables.chartVersion  }}.tgz'
+              chartPath: '$(System.DefaultWorkingDirectory)/drop/$(chartName)-$(chartVersion).tgz'
               releaseName: '$(releaseName)'
               namespace: '$(Namespace)'
               arguments: '--install --wait --timeout 300s'
