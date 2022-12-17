@@ -1,0 +1,59 @@
+trigger:
+  - none
+  
+pool: 'Azure Pipelines'
+
+parameters:
+  - name: Environment
+    displayName: Environment
+    type: string
+    default: 'dev'
+
+  - chartVersion: '0.3.0'
+    displayName: Chart Version
+    type: string
+  - Name: Namespace
+    type: string
+    default: default
+
+variables:
+  - name: chartPath
+    value: 'helm/todo'
+  - name: chartName
+    value: 'todo'
+  - name: releaseName
+    value: 'todo-release'
+
+stages:
+  - stage: Deploy
+    displayName: Deploy
+    dependsOn: Build
+    condition: succeeded()
+    jobs:
+      - job: Deploy
+        displayName: Deploy
+        vatiables:
+          - name: k8scluster
+            value: 'todo-k8s'
+        steps:
+          - task: DownloadBuildArtifacts@0
+            displayName: Download Artifact
+            inputs:
+              artifactName: 'drop'
+              downloadPath: '$(System.DefaultWorkingDirectory)'
+          - task: HelmInstaller@1
+            displayName: Helm Installer
+            inputs:
+              helmVersionToInstall: 'latest'
+          - task: HelmDeploy@0
+            displayName: Helm Deploy
+            inputs:
+              command: 'upgrade'
+              chartPath: '$(System.DefaultWorkingDirectory)/drop/$(chartName)-$(chartVersion).tgz'
+              releaseName: '$(releaseName)'
+              namespace: '$(Namespace)'
+              arguments: '--install --wait --timeout 300s'
+              connectionType: 'Kubernetes Service Connection'
+              kubernetesServiceEndpoint: 'Azure Kubernetes Service'
+              kubernetesCluster: '$(k8scluster)'
+              forceUpdate: true
