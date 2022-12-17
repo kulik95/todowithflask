@@ -8,6 +8,7 @@ parameters:
     displayName: Environment
     type: string
     default: 'dev'
+
   - name: chartVersion
     displayName: Chart Version
     type: string
@@ -16,6 +17,8 @@ parameters:
     displayName: Deployment Namespace
     type: string
     default: default
+
+variables:
   - name: chartPath
     value: 'helm/todo'
   - name: chartName
@@ -41,7 +44,7 @@ stages:
             displayName: Helm Deploy
             inputs:
               command: 'upgrade'
-              chartPath: '$(System.DefaultWorkingDirectory)/drop/$(chartName)-$(chartVersion).tgz'
+              chartPath: '$(System.DefaultWorkingDirectory)/drop/${{ variables.chartName  }}-${{ variables.chartVersion  }}.tgz'
               releaseName: '$(releaseName)'
               namespace: '$(Namespace)'
               arguments: '--install --wait --timeout 300s'
