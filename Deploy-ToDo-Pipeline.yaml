@@ -54,6 +54,6 @@ stages:
               namespace: '$(Namespace)'
               arguments: '--install --wait --timeout 300s'
               connectionType: 'Kubernetes Service Connection'
-              kubernetesServiceEndpoint: 'Azure Kubernetes Service'
+              kubernetesServiceEndpoint: 'todo-sc'
               kubernetesCluster: '$(k8scluster)'
               forceUpdate: true
