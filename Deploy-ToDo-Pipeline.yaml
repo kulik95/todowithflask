@@ -20,11 +20,11 @@ parameters:
 
 variables:
   - name: chartPath
-    value: 'helm/todo'
+    value: "helm/todo"
   - name: chartName
-    value: 'todo'
+    value: "todo"
   - name: releaseName
-    value: 'todo-release'
+    value: todo-release
 
 stages:
   - stage: Deploy
