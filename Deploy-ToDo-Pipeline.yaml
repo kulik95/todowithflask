@@ -9,10 +9,12 @@ parameters:
     type: string
     default: 'dev'
 
-  - chartVersion: '0.3.0'
+  - name: chartVersion
     displayName: Chart Version
     type: string
-  - Name: Namespace
+    default: "0.3.0"  
+  - name: Namespace
+    displayName: Deployment Namespace
     type: string
     default: default
 
