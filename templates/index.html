@@ -48,9 +48,13 @@
                         {% else %}
                         <td>Completed</td>
                         {% endif %}
-                        
-                        <td><a href="/complete/{{todo.id}}" class ="btn btn-danger">Complete</a></td>
-                        <td><a href="/delete/{{todo.id}}" class ="btn btn-danger">Delete</a></td>
+                          {% if todo.complete == False %}
+                          <td><a href="/complete/{{todo.id}}" class ="btn btn-danger">Complete</a></td>
+                          <td><a href="/delete/{{todo.id}}" class ="btn btn-danger">Delete</a></td>
+                          {% else %}
+                          <td><a href="/complete/{{todo.id}}" class ="btn btn-danger">Do Not Complete</a></td>
+                          <td><a href="/delete/{{todo.id}}" class ="btn btn-danger">Delete</a></td>
+                          {% endif %}
   
                     </tr>
                   {% endfor %}
