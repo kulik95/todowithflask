@@ -34,7 +34,7 @@ stages:
     jobs:
       - job: Deploy
         displayName: Deploy
-        vatiables:
+        variables:
           - name: k8scluster
             value: 'todo-k8s'
         steps:
