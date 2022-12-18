@@ -3,7 +3,7 @@ trigger:
   
 pool: 'Azure Pipelines'
 
-resource:
+resources:
   repositories:
   - repository: github-repo
     type: github
