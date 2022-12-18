@@ -20,6 +20,3 @@ spec:
             cpu: "500m"
         ports:
         - containerPort: 5001
-
-
-#SERVICE I LOAD BALANCER YAP HERHANGI BIR CLOUD ORTAMINDAKI K8S DAGIT

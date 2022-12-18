@@ -3,6 +3,13 @@ trigger:
   
 pool: 'Azure Pipelines'
 
+resource:
+  repositories:
+  - repository: github-repo
+    type: github
+    name: memoliyasti/todowithflask
+    endpoint: memoliyasti
+
 parameters:
   - name: Environment
     displayName: Environment
@@ -30,49 +37,25 @@ stages:
   - stage: Deploy
     displayName: (${{ parameters.Environment }}) - Deploy ${{ variables.chartName }}
     jobs:
-      - job: CreateDeploymentBundles
-        displayName: Create Deployment Bundles
-        steps:
-          - task: HelmInstaller@1
-            displayName: Helm Installer
-            inputs:
-              helmVersionToInstall: latest
-          - task: HelmDeploy@0
-            displayName: Helm Package
-            inputs:
-              command: package
-              chartPath: $(chartPath)
-              version: $(chartVersion)
-              destination: $(Build.ArtifactStagingDirectory)
-          - task: PublishBuildArtifacts@1
-            displayName: Publish Artifact
-            inputs:
-              PathtoPublish: $(Build.ArtifactStagingDirectory)
-              ArtifactName: $(chartName)
-              publishLocation: Container
-      - job: DeployToKubernetes
-        displayName: Deploy to Kubernetes
-        dependsOn: CreateDeploymentBundles
-        steps:
-          - task: DownloadBuildArtifacts@0
-            displayName: Download Artifact
-            inputs:
-              artifactName: $(chartName)
-              downloadPath: $(System.DefaultWorkingDirectory)
-          - task: HelmInstaller@1
-            displayName: Helm Installer
-            inputs:
-              helmVersionToInstall: latest
-          - task: HelmDeploy@0
-            displayName: Helm Deploy
-            inputs:
-              command: upgrade
-              chartPath: $(chartPath)
-              releaseName: $(releaseName)
-              namespace: $(Namespace)
-              overrideValues: |
-                image.repository: $(Build.Repository.Name)
-                image.tag: $(Build.BuildId)
-              install: true
-              waitForExecution: true
+    - job: Deploy
+      steps:
+      - task: HelmInstaller@1
+        inputs:
+          version: latest
+      - task: HelmDeploy@1
+        inputs:
+          connectionType: AzureResourceManager
+          azureSubscription: 'todo-sc'
+          kubernetesCluster: 'todo-k8s'
+          command: upgrade
+          chartType: Repo
+          chartName: ${{ variables.chartName }}
+          chartVersion: ${{ parameters.chartVersion }}
+          repoName: memoliyasti/todowithflask
+          repoUrl: https://github.com/memoliyasti/todowithflask
+          releaseName: ${{ variables.releaseName }}
+          namespace: ${{ variables.namespace }}
+          install: true
+          force: true
+          wait: true
   
