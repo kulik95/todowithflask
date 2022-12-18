@@ -29,7 +29,6 @@ stages:
           - task: Kubernetes@1
             inputs:
               connectionType: ${{ variables.aksSC }}}
-              azureSubscriptionEndpoint: ${{ variables.deploymentService }}
               azureResourceGroup: ${{ variables.aksClusterRg }}
               kubernetesCluster: ${{ variables.aksName }}
               useClusterAdmin: true
