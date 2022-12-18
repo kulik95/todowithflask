@@ -22,11 +22,13 @@ stages:
             value: "todo-rg"
           - name: aksName
             value: "todo-k8s"
+          - name: aksSC
+            value: "todo-sc"
         steps:
           - checkout: none
           - task: Kubernetes@1
             inputs:
-              connectionType: 'Azure Resource Manager'
+              connectionType: ${{ variables.aksSC }}}
               azureSubscriptionEndpoint: ${{ variables.deploymentService }}
               azureResourceGroup: ${{ variables.aksClusterRg }}
               kubernetesCluster: ${{ variables.aksName }}
