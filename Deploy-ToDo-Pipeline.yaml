@@ -28,27 +28,51 @@ variables:
 
 stages:
   - stage: Deploy
-    displayName: Deploy
+    displayName: (${{ parameters.Environment }}) - Deploy ${{ variables.chartName }}
     jobs:
-      - job: Deploy
-        displayName: Deploy
-        variables:
-          - name: k8scluster
-            value: 'todo-k8s'
+      - job: CreateDeploymentBundles
+        displayName: Create Deployment Bundles
         steps:
           - task: HelmInstaller@1
             displayName: Helm Installer
             inputs:
-              helmVersionToInstall: 'latest'
+              helmVersionToInstall: latest
+          - task: HelmDeploy@0
+            displayName: Helm Package
+            inputs:
+              command: package
+              chartPath: $(chartPath)
+              version: $(chartVersion)
+              destination: $(Build.ArtifactStagingDirectory)
+          - task: PublishBuildArtifacts@1
+            displayName: Publish Artifact
+            inputs:
+              PathtoPublish: $(Build.ArtifactStagingDirectory)
+              ArtifactName: $(chartName)
+              publishLocation: Container
+      - job: DeployToKubernetes
+        displayName: Deploy to Kubernetes
+        dependsOn: CreateDeploymentBundles
+        steps:
+          - task: DownloadBuildArtifacts@0
+            displayName: Download Artifact
+            inputs:
+              artifactName: $(chartName)
+              downloadPath: $(System.DefaultWorkingDirectory)
+          - task: HelmInstaller@1
+            displayName: Helm Installer
+            inputs:
+              helmVersionToInstall: latest
           - task: HelmDeploy@0
             displayName: Helm Deploy
             inputs:
-              command: 'upgrade'
-              chartPath: '$(System.DefaultWorkingDirectory)/drop/$(chartName)-$(chartVersion).tgz'
-              releaseName: '$(releaseName)'
-              namespace: '$(Namespace)'
-              arguments: '--install --wait --timeout 300s'
-              connectionType: 'Kubernetes Service Connection'
-              kubernetesServiceEndpoint: 'todo-sc'
-              kubernetesCluster: '$(k8scluster)'
-              forceUpdate: true
+              command: upgrade
+              chartPath: $(chartPath)
+              releaseName: $(releaseName)
+              namespace: $(Namespace)
+              overrideValues: |
+                image.repository: $(Build.Repository.Name)
+                image.tag: $(Build.BuildId)
+              install: true
+              waitForExecution: true
+  
