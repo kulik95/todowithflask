@@ -11,7 +11,7 @@ parameters:
 
 stages:
   - stage: Secrets
-    displayName: (${{ parameters.Environment }}) - Generate K8s Secrets
+    displayName: Generate K8s Secrets
     jobs:
       - job: Secrets
         displayName: Generate Connector Secrets
