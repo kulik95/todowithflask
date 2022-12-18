@@ -29,7 +29,7 @@ stages:
           - task: Kubernetes@1
             inputs:
               connectionType: 'Azure Resource Manager'
-              azureSubscriptionEndpoint: $(aksSC)
+              azureSubscriptionEndpoint: $(deploymentService)
               azureResourceGroup: $(aksClusterRg)
               kubernetesCluster: $(aksName)
               useClusterAdmin: true
