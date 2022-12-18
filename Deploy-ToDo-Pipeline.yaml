@@ -3,7 +3,7 @@ trigger:
   
 pool: 'Azure Pipelines'
 
-resources:
+resource:
   repositories:
   - repository: github-repo
     type: github
@@ -42,7 +42,7 @@ stages:
       - task: HelmInstaller@1
         inputs:
           version: latest
-      - task: HelmDeploy@1
+      - task: HelmDeploy@0
         inputs:
           connectionType: AzureResourceManager
           azureSubscription: 'todo-sc'
