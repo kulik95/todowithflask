@@ -11,11 +11,6 @@ resources:
     endpoint: memoliyasti
 
 parameters:
-  - name: Environment
-    displayName: Environment
-    type: string
-    default: 'dev'
-
   - name: chartVersion
     displayName: Chart Version
     type: string
@@ -48,7 +43,7 @@ stages:
           azureSubscription: 'todo-sc'
           kubernetesCluster: 'todo-k8s'
           command: upgrade
-          chartType: Repo
+          chartType: FilePath
           chartName: ${{ variables.chartName }}
           chartVersion: ${{ parameters.chartVersion }}
           repoName: memoliyasti/todowithflask
