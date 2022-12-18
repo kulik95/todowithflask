@@ -28,7 +28,8 @@ stages:
           - checkout: none
           - task: Kubernetes@1
             inputs:
-              connectionType: ${{ variables.aksSC }}}
+              connectionType: 'Kubernetes Service Connection'
+              azureSubscriptionEndpoint: ${{ variables.aksSC }}}
               azureResourceGroup: ${{ variables.aksClusterRg }}
               kubernetesCluster: ${{ variables.aksName }}
               useClusterAdmin: true
