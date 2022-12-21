@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  todo:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2022-12-21T22:36:43.634665+01:00"
+    description: Helm Chart for ToDo App
+    digest: 13b68e55e7f91e8af2db0716bff95701847ff6989eb42c4ac81df63e24a9d99e
+    name: todo
+    type: application
+    urls:
+    - https://memoliyasti.github.io/todowithflask/todo-0.3.0.tgz
+    version: 0.3.0
+generated: "2022-12-21T22:36:43.634149+01:00"
