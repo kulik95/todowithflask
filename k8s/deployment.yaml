@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: todo-app
-        image: memoliyasti/todo-app:v3
+        image: memoliyasti/todo:v3
         resources:
           limits:
             memory: "128Mi"
