@@ -9,18 +9,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-
-      - name: Docker Tool Installer
-        uses: docker-practice/actions-setup-docker@master
-        with:
-          docker_version: 20.10.2
-          docker_channel: stable
-
+      - name: Check if image has been updated
+        run: git diff HEAD~1 HEAD -- path/to/image
+        id: diff
       - name: Build the Docker image
+        if: steps.diff.outputs.exit_code == 1
         run: docker build ./ -t memoliyasti/todo:latest
 
       - name: Login to Docker Hub
+        if: steps.diff.outputs.exit_code == 1
         run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u memoliyasti --password-stdin
 
       - name: Push the Docker image
+        if: steps.diff.outputs.exit_code == 1
         run: docker push memoliyasti/todo:latest
