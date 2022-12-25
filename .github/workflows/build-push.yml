@@ -8,7 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        #Check the Docker image version is updated or not
       - name: Check Docker image version
         id: docker-image-version
         uses: docker/metadata-action@v3
@@ -34,5 +33,7 @@ jobs:
       - name: Push the Docker image
         run: docker push memoliyasti/todo:${{ steps.docker-image-version.outputs.version }}
 
-      - name: Update Kubernetes deployment
-        run: kubectl set image deployment/todo-app todo-app=memoliyasti/todo:${{ env.IMAGE_VERSION }} -n todo
+      - name: Set the image tag in the deployment file
+        run: |
+          sed -i 's|memoliyasti/todo:latest|memoliyasti/todo:${{ steps.docker-image-version.outputs.version }}|g' k8s/deployment.yaml
+          cat k8s/deployment.yaml
