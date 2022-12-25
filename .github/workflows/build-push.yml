@@ -26,7 +26,7 @@ jobs:
       - name: Build the Docker image
         run: docker build ./ -t memoliyasti/todo:${{ steps.docker-image-version.outputs.version }}
         env:
-          steps.docker-image-version.outputs.version: ${{ steps.docker-image-version.outputs.version }}
+          IMAGE_VERSION: ${{ steps.docker-image-version.outputs.version }}
 
       - name: Login to Docker Hub
         run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u memoliyasti --password-stdin
@@ -34,3 +34,5 @@ jobs:
       - name: Push the Docker image
         run: docker push memoliyasti/todo:${{ steps.docker-image-version.outputs.version }}
 
+      - name: Update Kubernetes deployment
+        run: kubectl set image deployment/todo-app todo-app=memoliyasti/todo:${{ env.IMAGE_VERSION }} -n todo

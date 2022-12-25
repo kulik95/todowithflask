@@ -14,10 +14,14 @@ spec:
     spec:
       containers:
       - name: todo-app
-        image: memoliyasti/todo:${{ steps.docker-image-version.outputs.version }}
+        image: memoliyasti/todo:$IMAGE_VERSION
+        imagePullPolicy: IfNotPresent
         resources:
           limits:
             memory: "128Mi"
             cpu: "500m"
         ports:
         - containerPort: 5001
+        env:
+          - name: IMAGE_VERSION
+            value: $IMAGE_VERSION
