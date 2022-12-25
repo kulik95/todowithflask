@@ -9,5 +9,18 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Echo Test
-        run: echo "Test Test"
+
+      - name: Docker Tool Installer
+        uses: docker-practice/actions-setup-docker@master
+        with:
+          docker_version: 20.10.2
+          docker_channel: stable
+
+      - name: Build the Docker image
+        run: docker build ./ -t memoliyasti/todo:latest
+
+      - name: Login to Docker Hub
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u memoliyasti --password-stdin
+
+      - name: Push the Docker image
+        run: docker push memoliyasti/todo:latest
