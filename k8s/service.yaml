@@ -6,7 +6,7 @@ spec:
   selector:
     app: todo-app
   ports:
-  - port: 5001
+  - port: 32760
     targetPort: 5001
     protocol: TCP
     name: http
