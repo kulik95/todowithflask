@@ -6,7 +6,7 @@ spec:
   selector:
     app: todo-app
   ports:
-  - port: 32763
+  - port: 80
     targetPort: 5001
     protocol: TCP
   type: LoadBalancer
