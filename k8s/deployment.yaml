@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: todo-app
-        image: memoliyasti/todo:latest
+        image: dev3l/node-react-webpack-hello-world
         imagePullPolicy: IfNotPresent
         resources:
           limits:
