@@ -9,5 +9,4 @@ spec:
   - port: 32763
     targetPort: 5001
     protocol: TCP
-    name: http
   type: LoadBalancer
